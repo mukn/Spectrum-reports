@@ -3,6 +3,8 @@ SELECT
 	LTRIM(RTRIM(j.Job_Number)) AS Job_Number,
 	j.Job_Description,
 	j.Start_Date,
+	YEAR(j.Start_Date) AS Start_FY,
+	YEAR(j.Complete_Date) AS End_FY,
 	j.Complete_Date,
 	CASE
 		WHEN p.Projected_Cost > 0 THEN p.Cost_To_Date / p.Projected_Cost 
