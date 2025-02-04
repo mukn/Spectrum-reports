@@ -17,13 +17,13 @@ SELECT
 	j.Address_2 AS Customer_Address2,
 	j.City AS Customer_City,
 	j.State AS Customer_State,
-	SUBSTRING(j.Zip_Code,1,5) AS Customer_ZIP,
+	SUBSTRING(LTRIM(j.Zip_Code),1,5) AS Customer_ZIP,
 	LTRIM(RTRIM(j.WO_Site)) AS Site_Code,
 	s.Site_Address1,
 	s.Site_Address2,
 	s.Site_City,
 	s.Site_State,
-	SUBSTRING(s.Site_ZIP,1,5) AS Site_ZIP,
+	SUBSTRING(LTRIM(s.Site_ZIP),1,5) AS Site_ZIP,
 	CASE
 		WHEN p.Projected_Cost > 0 THEN p.Revised_Contract * p.Cost_To_Date / p.Projected_Cost 
 		ELSE 0
