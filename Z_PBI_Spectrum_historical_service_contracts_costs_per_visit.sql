@@ -11,17 +11,24 @@ SELECT --TOP 100
 	s.End_Date AS Contract_End,
 	s.Salesman,
 	s.Contract_Amount,
-	c.Tran_Type,
-	c.Cost
+	c.Costs_Total,
+	r.Revenue_Total,
+	(r.Revenue_Total - c.Costs_Total) AS Revenue_Earned
 	--,s.*
 	
 FROM
 	SC_CONTRACT_MC AS s
 	LEFT OUTER JOIN
-    (SELECT Contract_Number, Tran_Type, SUM(Amt) AS Cost
+    (SELECT Contract_Number, SUM(Amt) AS Costs_Total
 	FROM Z_PBI_Spectrum_historical_service_contracts_costs_per_visits
-	GROUP BY Contract_Number, Tran_Type) AS c
+	GROUP BY Contract_Number) AS c
 		ON LTRIM(RTRIM(s.Contract_Number)) = c.Contract_Number
+	LEFT OUTER JOIN
+	(SELECT Contract_Number, SUM(Scheduled_Amount) AS Revenue_Total
+	FROM Z_PBI_Spectrum_historical_service_contracts_billings
+	WHERE Transaction_Type = 'I'
+	GROUP BY Contract_Number) AS r
+		ON LTRIM(RTRIM(s.Contract_Number)) = r.Contract_Number
     
 WHERE
 	s.Company_Code = 'NA2'
