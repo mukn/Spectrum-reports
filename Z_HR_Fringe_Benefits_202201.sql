@@ -15,9 +15,12 @@ FROM
 	JOIN
 	(
 		SELECT h.Check_Number, f.Fringe_Code, f.Fringe_Amount, h.System_Key
-    FROM PR_TIME_CARD_HISTORY_MC AS h JOIN PR_TC_DET_UNION_FRINGE_MC AS f ON h.System_Key = f.System_Key AND h.Employee_Code = f.Employee_Code
+    FROM PR_TIME_CARD_HISTORY_MC AS h JOIN PR_TC_DET_UNION_FRI_HIST_MC AS f ON h.System_Key = f.System_Key AND h.Employee_Code = f.Employee_Code
 	) AS f
 		ON c.Check_Number = f.Check_Number
 WHERE
 	c.Company_Code = 'NA2'
+	--AND c.History_Date_List1 > '01-01-2022'
+	--AND c.History_Date_List1 < '01-30-2022'
+	
 ORDER BY c.History_Date_List1 DESC, c.Check_number DESC
